@@ -5,21 +5,15 @@ cnt_in = 2
 cnt_h1 = 10
 cnt_h2 = 15
 cnt_out = 1
-learning_rate = 0.05
 
+my_model = tf.keras.Sequential([
+    tf.keras.layers.Dense(cnt_h1, activation="relu", input_dim=cnt_in),
+    tf.keras.layers.Dense(cnt_h2, activation="relu"),
+    tf.keras.layers.Dense(cnt_out)
+])
 
-def init_model():
-    output = tf.keras.Sequential([
-        tf.keras.layers.Dense(cnt_h1, activation="relu", input_dim=cnt_in),
-        tf.keras.layers.Dense(cnt_h2, activation="relu"),
-        tf.keras.layers.Dense(cnt_out)
-    ])
-    return output
-
-
-my_model = init_model()
 my_model.compile(loss='mean_squared_error',
-                 optimizer='sgd',
+                 optimizer='adam',
                  metrics=['accuracy'])
 
 in_data = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
