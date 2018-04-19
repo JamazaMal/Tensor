@@ -9,14 +9,14 @@ cnt_h2 = 8
 cnt_out = 1
 
 # Get the data from file
-dataset = numpy.loadtxt("diabetes.csv", delimiter=",")
+data_set = numpy.loadtxt("diabetes.csv", delimiter=",")
 
-# Split data into seperate training and test sets.
-X_train = dataset[0:668, 0:8]
-X_test = dataset[668:, 0:8]
+# Split data into separate training and test sets.
+X_train = data_set[0:668, 0:8]
+X_test = data_set[668:, 0:8]
 
-Y_train = dataset[0:668, 8]
-Y_test = dataset[668:, 8]
+Y_train = data_set[0:668, 8]
+Y_test = data_set[668:, 8]
 
 # Define model / network
 my_model = tf.keras.Sequential([
