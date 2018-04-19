@@ -2,36 +2,45 @@
 import tensorflow as tf
 import numpy
 
+# Set some parameters
 cnt_in = 8
 cnt_h1 = 12
 cnt_h2 = 8
 cnt_out = 1
 
+# Get the data from file
 dataset = numpy.loadtxt("diabetes.csv", delimiter=",")
 
-X = dataset[:, 0:8]
-Y = dataset[:, 8]
+# Split data into seperate training and test sets.
+X_train = dataset[0:668, 0:8]
+X_test = dataset[668:, 0:8]
 
+Y_train = dataset[0:668, 8]
+Y_test = dataset[668:, 8]
+
+# Define model / network
 my_model = tf.keras.Sequential([
     tf.keras.layers.Dense(cnt_h1, activation="relu", input_dim=cnt_in),
     tf.keras.layers.Dense(cnt_h2, activation="relu"),
     tf.keras.layers.Dense(cnt_out, activation="sigmoid")
 ])
 
-my_model.compile(loss='mean_squared_error',
+# 'Compile' model
+my_model.compile(loss='binary_crossentropy',
                  optimizer='adam',
                  metrics=['accuracy'])
 
-my_model.fit(X, Y, epochs=100, batch_size=5, verbose=0)
+# Train model using training data
+my_model.fit(X_train, Y_train, epochs=150, batch_size=100, verbose=0)
 
+# Test models accuracy.
 cnt_tot = 0
 cnt_right = 0
-for i, res in enumerate(my_model.predict(X)):
+for i, res in enumerate(my_model.predict(X_test)):
     cnt_tot += 1
 
-    if round(res[0]) == Y[i]:
+    if round(res[0]) == Y_test[i]:
         cnt_right += 1
-    else:
-        print(i, res[0], Y[i])
 
+# Output end result
 print("{}/{} correct {}%".format(cnt_right, cnt_tot, round(cnt_right/cnt_tot*100)))
