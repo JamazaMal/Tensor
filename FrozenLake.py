@@ -1,20 +1,31 @@
 
+import tensorflow as tf
 import gym
 import numpy as np
 
 
+cnt_in = 4
+cnt_hl = 20
+cnt_out = 1
 
+
+my_model = tf.keras.Sequential([
+    tf.keras.layers.Dense(cnt_hl, activation="relu", input_dim=cnt_in),
+    tf.keras.layers.Dense(cnt_out, activation="sigmoid")
+])
 
 env = gym.make('CartPole-v1')
+o = [0 for _ in range(300)]
+m = [0 for _ in range(300)]
 
 for i in range(100):
-    o = env.reset()
+    cnt = 0
+    o[cnt] = env.reset()
+    m[cnt] = my_model.predict([[o[cnt]]])[0][0]
     d = False
     while not d:
+        cnt += 1
         env.render()
-        if o[2] > 0:
-            o, _, d, _ = env.step(1)
-        else:
-            if o[2] < 0:
-                o, _, d, _ = env.step(0)
+        o[cnt], _, d, _ = env.step(int(round(m[cnt])))
+        m[cnt] = my_model.predict([[o[cnt]]])[0][0]
 
