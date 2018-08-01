@@ -16,5 +16,6 @@ def respond(_sout):
     pw.seek(0)
 
 
+
 pr = open(r'\\.\pipe\ctop', 'rb', 0)
 pw = open(r'\\.\pipe\ptoc', 'wb', 0)
